@@ -1,4 +1,4 @@
-import { createSVGElement, mount } from './utils';
+import { createSVGElement, mount } from '../utils';
 
 // 创建上下文
 export function createContext(width, height) {
