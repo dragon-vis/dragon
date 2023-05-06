@@ -3,6 +3,22 @@ export function identity(x) {
   return x;
 }
 
+// 函数复合,当没有参数传入的时候,会返回一个 identity 函数
+export function compose(...fns) {
+  return fns.reduce((total, cur) => (x) => cur(total(x)), identity);
+}
+
+// 函数柯里化，当不传入参数的时候，需要等价于传入了 undefined 参数
+export function curry(fn) {
+  const arity = fn.length;
+  return function curried(...args) {
+    // 如果没有传入参数就把参数列表设置为 [undefined]
+    const newArgs = args.length === 0 ? [undefined] : args;
+    if (newArgs.length >= arity) return fn(...newArgs);
+    return curried.bind(null, ...newArgs);
+  };
+}
+
 // 返回最接近输入的 n 的比 base 小的整数
 export function floor(n, base) {
   return base * Math.floor(n / base);
