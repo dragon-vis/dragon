@@ -26,7 +26,7 @@ export function computeFacetViews(box, {
         y: paddingRight + box.y + padding * j + j * boxHeight,
         width: boxWidth,
         height: boxHeight,
-        transform,
+        transform, // 指定过滤函数
       });
     }
   }

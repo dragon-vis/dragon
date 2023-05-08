@@ -1,7 +1,7 @@
 import { applyTransform, createSVGElement, mount } from '../utils';
 
 // 定义一个 transform 函数，参数为变换种类 type，操作上下文 context，以及需要的变换参数 params
-export function transform(type, context, ...params) {
+function transform(type, context, ...params) {
   // 获取操作上下文中的 group
   const { group } = context;
   // 调用 utils 中的 applyTransform 函数，给 group 应用相应的变换

@@ -17,18 +17,22 @@ export function legendRamp(renderer, scale, coordinate, {
   renderer.save();
   renderer.translate(x, y);
 
+  // 绘制标签
   if (label) {
     renderer.text({ text: label, x: 0, y: 0, fontWeight: 'bold', fontSize, textAnchor: 'start', dy: '1em' });
   }
 
   const legendY = label ? height * 2 : 0;
   const domainValues = [firstOf(domain), lastOf(domain)];
+  // 用一条条紧靠的线来实现渐变效果
+  // 将每条线的位置 x 转换到比例尺的定义域内
   const value = createLinear({ domain: [0, width], range: domainValues });
   for (let i = 0; i < width; i += 1) {
     const stroke = scale(value(i));
     renderer.line({ x1: i, y1: legendY, x2: i, y2: legendY + height, stroke });
   }
 
+  // 绘制 ticks
   const position = createLinear({ domain: domainValues, range: [0, width] });
 
   const values = scale.thresholds ? [

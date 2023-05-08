@@ -1,5 +1,6 @@
 import { identity } from '../utils';
 
+// marginLeft 色块和文字的距离
 export function legendSwatches(renderer, scale, coordinate, {
   x,
   y,
@@ -14,12 +15,14 @@ export function legendSwatches(renderer, scale, coordinate, {
   renderer.save();
   renderer.translate(x, y);
 
+  // 绘制 label
   if (label) {
     renderer.text({ text: label, x: 0, y: 0, fontWeight: 'bold', fontSize, textAnchor: 'start', dy: '1em' });
   }
 
   const legendY = label ? swatchSize * 2 : 0;
   for (const [i, t] of Object.entries(domain)) {
+    // 绘制色块
     const color = scale(t);
     const legendX = width * i;
 
@@ -31,6 +34,8 @@ export function legendSwatches(renderer, scale, coordinate, {
       stroke: color,
       fill: color,
     });
+
+    // 绘制文字
     const textX = legendX + marginLeft + swatchSize;
     const textY = legendY + swatchSize;
     renderer.text({ text: formatter(t), x: textX, y: textY, fill: 'currentColor', fontSize });

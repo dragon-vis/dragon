@@ -21,7 +21,7 @@ function render(renderer, I, scales, values, directStyles, coordinate) {
   const width = groupWidth * intervalWidth;
   return Array.from(I, (i) => {
     const { z: dz, x: dx, ...restDefaults } = defaults;
-    const offset = (Z[i] || dz) * groupWidth;
+    const offset = (Z[i] || dz) * groupWidth; // 计算偏移
     const x1 = (X[i] || dx) + offset;
     return rect(renderer, coordinate, {
       ...restDefaults,

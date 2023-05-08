@@ -1,5 +1,6 @@
 import { dist, angleBetween, sub } from '../utils';
 
+// 用于生成 SVG 的 path 字符串
 export function line([p0, ...points]) {
   return [
     ['M', ...p0],
@@ -7,6 +8,7 @@ export function line([p0, ...points]) {
   ];
 }
 
+// 和 line 的区别就是进行了闭合操作
 export function area(points) {
   return [
     ...line(points),
@@ -14,6 +16,7 @@ export function area(points) {
   ];
 }
 
+// 生成绘制扇形的路径
 export function sector([c, p0, p1, p2, p3]) {
   const r = dist(c, p0);
   const r1 = dist(c, p2);
@@ -29,6 +32,8 @@ export function sector([c, p0, p1, p2, p3]) {
   ];
 }
 
+// 生成绘制圆环的路径
+// 用两个扇形来模拟
 export function ring([c, [r1, r2]]) {
   const [cx, cy] = c;
   const p0 = [cx, cy - r2];

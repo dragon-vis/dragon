@@ -1,6 +1,7 @@
 import { firstOf, map } from '../utils';
 import { categoricalColors } from './theme';
 
+// 这个函数一方面会推断出我们编码的种类，一方面会补全我们的编码信息
 export function inferEncodings(type, data, encodings) {
   const typedEncodings = map(encodings, (encoding, key) => ({
     type: inferType(data, encoding, key),
@@ -30,9 +31,9 @@ export function inferEncodings(type, data, encodings) {
 }
 
 export function valueOf(data, { type, value }) {
-  if (type === 'transform') return data.map(value);
-  if (type === 'value') return data.map(() => value);
-  return data.map((d) => d[value]);
+  if (type === 'transform') return data.map(value); // transform encoding
+  if (type === 'value') return data.map(() => value); // value encoding
+  return data.map((d) => d[value]); // field encoding
 }
 
 function inferType(data, encoding, name) {

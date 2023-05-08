@@ -1,5 +1,20 @@
 import { identity, round } from './helper';
 
+/**
+ * 数据根据 key 分组
+ * @param {T[]} array 需要分组的数据
+ * @param {T => string} key 获得数据 key 的函数
+ * @returns {Map<string, T>}
+ * @example
+ * const array = [
+ *   {name:'a', value: 1},
+ *   {name:'a', value: 2},
+ *   {name:'b', value: 3}
+ * ]
+ * const groups = group(array, d => d.name);
+ * groups
+ * Map(2) {'a' => [{name: 'a', value:1}, {name: 'a', value: 2}], 'b' => [{name: 'b', value: 3}]}
+ */
 export function group(array, key = (d) => d) {
   const keyGroups = new Map();
   for (const item of array) {
@@ -45,19 +60,24 @@ export function tickStep(min, max, count) {
   return step1;
 }
 
+// 根据指定的最小值、最大值和数量，生成刻度值
 export function ticks(min, max, count) {
+  // 计算刻度步长
   const step = tickStep(min, max, count);
   // 让 start 和 stop 都是 step 的整数倍
   // 这样生成的 ticks 都是 step 的整数倍
   // 可以让可读性更强
   const start = Math.ceil(min / step);
   const stop = Math.floor(max / step);
+  // 计算生成刻度值的数量
   const n = Math.ceil(stop - start + 1);
   // n 不一定等于 count，所以生成的 ticks 的数量可能和指定的不一样
   const values = new Array(n);
+  // 根据 start、stop 和 step，依次生成 n 个刻度值，存储在 values 数组中
   for (let i = 0; i < n; i += 1) {
-    values[i] = round((start + i) * step);
+    values[i] = round((start + i) * step); // 使用 round 函数对刻度值进行四舍五入
   }
+  // 返回生成的刻度值数组
   return values;
 }
 

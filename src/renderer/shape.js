@@ -56,40 +56,50 @@ export function text(context, attributes) {
 // 'M 10 10 L 100 100 L 100 10 Z'
 export function path(context, attributes) {
   const { d } = attributes;
-  return shape('path', context, { ...attributes, d: d.flat().join(' ') });
+  const path = Array.isArray(d) ? d.flat().join(' ') : d;
+  return shape('path', context, { ...attributes, d: path });
 }
 
+// 定义一个绘制环形的函数，接收一个绘图上下文对象和一些配置属性参数
 export function ring(context, attributes) {
-  // r1 是内圆的半径，r2 是外圆的半径
+  // 解构赋值获取传入的圆心坐标和内外圆半径以及样式属性等信息
   const {
     cx, cy, r1, r2, ...styles
   } = attributes;
   const { stroke, strokeWidth, fill } = styles;
   const defaultStrokeWidth = 1;
+
+  // 绘制内圆，圆心坐标为(cx,cy)，半径为r1，fill表示填充颜色，stroke表示描边颜色，strokeWidth表示描边宽度
   const innerStroke = circle(context, {
     fill: 'transparent',
-    stroke: stroke || fill,
+    stroke: stroke || fill, // 如果没有传入描边颜色则使用填充颜色
     strokeWidth,
     cx,
     cy,
     r: r1,
   });
+
+  // 绘制环形，圆心坐标为(cx,cy)，半径为(r1+r2)/2，strokeWidth表示环的宽度
   const ring = circle(context, {
     ...styles,
-    strokeWidth: r2 - r1 - (strokeWidth || defaultStrokeWidth),
-    stroke: fill,
-    fill: 'transparent',
+    strokeWidth: r2 - r1 - (strokeWidth || defaultStrokeWidth), // 如果没有传入描边宽度则使用默认值
+    stroke: fill, // 环形描边使用填充颜色
+    fill: 'transparent', // 环形填充色为透明
     cx,
     cy,
     r: (r1 + r2) / 2,
   });
+
+  // 绘制外圆，圆心坐标为(cx,cy)，半径为r2，fill表示填充颜色，stroke表示描边颜色，strokeWidth表示描边宽度
   const outerStroke = circle(context, {
     fill: 'transparent',
-    stroke: stroke || fill,
+    stroke: stroke || fill, // 如果没有传入描边颜色则使用填充颜色
     strokeWidth,
     cx,
     cy,
     r: r2,
   });
+
+  // 返回绘制好的内圆、环形和外圆数组
   return [innerStroke, ring, outerStroke];
 }
